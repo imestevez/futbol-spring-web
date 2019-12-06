@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<h1> Error </h1>
-</body>
+<html th:replace="~{fragmentos/layout::layout(~{this::title}, ~{this::body})}" 
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Error</title>
+    </head>
+    <body>
+        <h1>Algo fue mal ...</h1>
+        <table class="table table-striped">
+            <tr>
+                <td>URI</td>
+                <td th:text="${path}" />
+            </tr>
+            <tr>
+                <td>Mensaje</td>
+                <td th:text="${message}" />
+            </tr>
+            <tr>
+                <td>Descripcion</td>
+                <td th:text="${binding_result}" />
+            </tr>
+            
+        </table>
+        <a class="btn btn-lg btn-block btn-secondary col-2" th:href="${return}">Volver</a>
+    </body>
 </html>
