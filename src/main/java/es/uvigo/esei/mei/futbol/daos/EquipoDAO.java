@@ -4,27 +4,30 @@
  * and open the template in the editor.
  */
 package es.uvigo.esei.mei.futbol.daos;
+
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import es.uvigo.esei.mei.futbol.entidades.Equipo;
-import java.util.Date;
+import org.springframework.data.repository.query.Param;
+
 /**
  *
  * @author ivan
  */
-
 public interface EquipoDAO extends JpaRepository<Equipo, Long> {
-   /* public List<Equipo> findEquipoByNombre(String nombre);
-    @Query("SELECT e FROM Equipo e WHERE e.nombre LIKE %?1") 
     public List<Equipo> findAll();
-    //public List<Equipo> findbyFundado(Date fundado);
-    public List<Equipo> findByNombreContaining(String patron);
-    public List<Equipo> findByCiudad(String ciudad);
-    public List<Equipo> findByPais(String pais);
-    public List<Equipo> findByEstadio(String estadio);*/
-    
-   public Equipo getById(String id);
-   public List<Equipo> findByPais(String pais);
+
+    public Equipo getById(Long id);
+
+    public List<Equipo> findByNombreContaining(String nombre);
+
+    public List<Equipo> findByCiudadContaining(String ciudad);
+
+    @Query(value = "SELECT * FROM Equipo  WHERE nombre LIKE CONCAT('%',:nombre,'%') " +
+        "AND ciudad LIKE  CONCAT('%',:ciudad,'%')", 
+    nativeQuery = true)
+    public List<Equipo> findByNombreCiudad(@Param("nombre") String nombre, 
+                    @Param("ciudad") String ciudad);
 
 }

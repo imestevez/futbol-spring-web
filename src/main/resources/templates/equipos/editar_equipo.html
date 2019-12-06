@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html th:replace="~{fragmentos/layout::layout(~{this::title}, ~{this::body})}" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Editar/crear equipo</title>
+    </head>
+
+    <body>
+        <h1 class="center-text" th:text="${esNuevo} ? 'Crear equipo' : 'Editar equipo'"></h1>
+        <form  th:action="@{/equipos/nuevo}" th:object="${equipo}" class="form-horizontal" id="equipo-form" modelAttribute="equipo" method="post">
+            <div class="form-group has-feedback">
+                <div class="form-group">
+                    <label class="col-2 control-label">Nombre</label>
+                    <input class="col-10 form-control" th:field="*{nombre}" size="30" maxlength="100" pattern="^[A-Za-záéíóúÁÉÍÓÚçÇñÑ0-9]+[A-Za-záéíóúÁÉÍÓÚçÇñÑ0-9 \.:,]*" required/>
+                    <label class="col-2 control-label">Ciudad</label>
+                    <input class="col-10 form-control" th:field="*{ciudad}" size="30" maxlength="100" pattern="^[A-Za-záéíóúÁÉÍÓÚçÇñÑ0-9]+[A-Za-záéíóúÁÉÍÓÚçÇñÑ0-9 \.:,]*" required/>
+                    <label class="col-2 control-label">Pais</label>
+                    <input class="col-10 form-control" th:field="*{pais}" size="30" maxlength="100" pattern="^[A-Za-záéíóúÁÉÍÓÚçÇñÑ0-9]+[A-Za-záéíóúÁÉÍÓÚçÇñÑ0-9 \.:,]*" required/>
+                    <label class="col-2 control-label">Fecha Fundacion</label>
+                    <input type="date" class="col-10 form-control" th:field="*{fundado}" size="30" maxlength="100" required/>
+                    <label class="col-2 control-label">Estadio</label>
+                    <select class="col-10 form-control" th:field="*{estadio}">
+                        <option th:each="estadio : ${estadios}" th:value="${estadio.id}"th:text="${estadio.nombre}"/>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-block btn-success col-2" th:text="${esNuevo} ? 'Crear' : 'Guardar'" type="submit">
+                        Guardar</button>
+                    <a class="btn btn-lg btn-block btn-secondary col-2" th:href="@{/equipos/}">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>

@@ -8,7 +8,6 @@ package es.uvigo.esei.mei.futbol.entidades;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
-import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import org.springframework.format.annotation.DateTimeFormat;
 /**
  *
  * @author ivan
@@ -34,7 +34,8 @@ public class Equipo implements Serializable{
     private String ciudad;
     
     private String pais;
-        
+    
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     @Temporal(TemporalType.DATE)
     private Date fundado;
     
