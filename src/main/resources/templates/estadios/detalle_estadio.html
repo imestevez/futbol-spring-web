@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html th:replace="~{fragmentos/layout::layout(~{this::title}, ~{this::body})}" 
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Equipo</title>
+    </head>
+    <body>
+        <h1><span th:text="${message}"></span></h1>
+        <table class="table table-striped">
+            <tr>
+                <td>Nombre</td>
+                <td th:text="${estadio.nombre}" />
+            </tr>
+            <tr>
+                <td>Aforo</td>
+                <td th:text="${estadio.aforo}" />
+            </tr>
+            <tr>
+                <td>Año Construccion</td>
+                <td th:text="${estadio.construido}" />
+            </tr>
+            <tr>
+                <td>Direccion</td>
+                <td th:text="'c/'+ ${estadio.direccion.calle}+ ', ' 
+                    + ${estadio.direccion.numero}+ ', ' 
+                    + ${estadio.direccion.ciudad}+ ', ' 
+                    + ${estadio.direccion.pais}" />
+            </tr>
+        </table>
+        <a class="btn btn-lg btn-block btn-secondary col-2" th:href="${return}">Volver</a>
+    </body>
+</html>

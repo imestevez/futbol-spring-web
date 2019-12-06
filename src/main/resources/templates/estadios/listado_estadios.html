@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html th:replace="~{fragmentos/layout::layout(~{this::title}, ~{this::body})}" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Listado de estadios</title>
+    </head>
+
+    <body>
+        <h1 class="center-text">Listado de estadios</h1>
+        <br>
+        <form th:action="@{/estadios/buscar}" method="post" class="form-horizontal" id="buscar-form">
+            <div class="row">
+                <div class="col-10 form-group">
+                    <div class="control-group" id="nombre">
+                        <label class="col-2 control-label">Nombre</label>
+                        <input class="col-8 form-control" th:name="nombreEstadio" size="20" maxlength="20" />
+                    </div>
+                    <div class="control-group" id="localidad">
+                        <label class="col-2 control-label">Ciudad</label>
+                        <input class="col-8 form-control" th:name="nombreCiudad" size="20" maxlength="20" />
+                    </div>
+                </div>
+                <div class="col-2 form-group">
+                    <button type="submit" class="btn btn-lg btn-block btn-secondary">Buscar</button>
+                </div>
+            </div>
+        </form>
+
+        <br />
+        <a class="col-2 btn btn-lg btn-block btn-info" style="float: right; margin-bottom: 2%" th:href="@{/estadios/nuevo}">Nuevo estadio</a>
+        <br />
+
+        <table id="dataTable" name="estadios" class="table table-striped ">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Aforo</th>
+                    <th>Año Construcción</th>
+                    <th>Direccion</th>
+                    <th />
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="estadio : ${estadios}">
+                    <td><a th:href="@{/estadios/__${estadio.id}__}" th:text="${estadio.nombre}"></a></td>
+                    <td th:text="${estadio.aforo}" />
+                    <td th:text="${estadio.construido}" />
+                    <td th:text="'c/'+ ${estadio.direccion.calle}+ ', ' 
+                        + ${estadio.direccion.numero}+ ', ' 
+                        + ${estadio.direccion.ciudad}+ ', ' 
+                        + ${estadio.direccion.pais}" />
+                    <td><a class="btn btn-warning" th:href="@{/estadios/__${estadio.id}__/editar}">Editar</a> <a
+                            class="btn btn-danger" th:href="@{/estadios/__${estadio.id}__/eliminar}"
+                            >Borrar</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </body>
+</html>
