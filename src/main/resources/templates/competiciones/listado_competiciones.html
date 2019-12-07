@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html th:replace="~{fragmentos/layout::layout(~{this::title}, ~{this::body})}" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Listado de competiciones</title>
+    </head>
+
+    <body>
+        <h1 class="center-text">Listado de competiciones</h1>
+        <br>
+        <form th:action="@{/competiciones/buscar}" method="post" class="form-horizontal" id="buscar-form">
+            <div class="row">
+                <div class="col-10 form-group">
+                    <div class="control-group" id="nombre">
+                        <label class="col-2 control-label">Nombre</label>
+                        <input class="col-8 form-control" th:name="nombreCompeticion" size="20" maxlength="20" />
+                    </div>
+                    <div class="control-group" id="localidad">
+                        <label class="col-2 control-label">Tipo</label>
+                        <input class="col-8 form-control" th:name="nombreTipo" size="20" maxlength="20" />
+                    </div>
+                </div>
+                <div class="col-2 form-group">
+                    <button type="submit" class="btn btn-lg btn-block btn-secondary">Buscar</button>
+                </div>
+            </div>
+        </form>
+
+        <br />
+        <a class="col-2 btn btn-lg btn-block btn-info" style="float: right; margin-bottom: 2%" th:href="@{/competiciones/nuevo}">Nueva competicion</a>
+        <br />
+
+        <table id="dataTable" name="competiciones" class="table table-striped ">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Tipo</th>
+                    <th>Edicion</th>
+                    <th />
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="competicion : ${competiciones}">
+                    <td><a th:href="@{/competiciones/__${competicion.id}__}" th:text="${competicion.nombre}"></a></td>
+                    <td th:text="${competicion.tipo}" />
+                    <td th:text="${competicion.edicion}" />
+                    <td><a class="btn btn-warning" th:href="@{/competiciones/__${competicion.id}__/editar}">Editar</a> <a
+                            class="btn btn-danger" th:href="@{/competiciones/__${competicion.id}__/eliminar}"
+                            >Borrar</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+
+    </body>
+</html>

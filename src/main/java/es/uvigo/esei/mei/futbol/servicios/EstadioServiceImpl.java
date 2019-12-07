@@ -19,20 +19,20 @@ public class EstadioServiceImpl implements EstadioService {
 
     @Override
     @Transactional
-    public Estadio crear(Estadio cliente) {
-        return dao.save(cliente);
+    public Estadio crear(Estadio equipo) {
+        return dao.save(equipo);
     }
 
     @Override
     @Transactional
-    public Estadio modificar(Estadio cliente) {
-        return dao.save(cliente);
+    public Estadio modificar(Estadio equipo) {
+        return dao.save(equipo);
     }
 
     @Override
     @Transactional
-    public void eliminar(Estadio cliente) {
-        dao.delete(cliente);
+    public void eliminar(Estadio equipo) {
+        dao.delete(equipo);
     }
 
     @Override
@@ -53,9 +53,8 @@ public class EstadioServiceImpl implements EstadioService {
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<Estadio> buscarNombreCiudad(String nombre, String ciudad) {
-        return dao.findByNombreCiudad(nombre, ciudad);
-
+    public List<Estadio> buscarNombre(String nombre) {
+        return dao.findByNombre(nombre);
     }
+
 }

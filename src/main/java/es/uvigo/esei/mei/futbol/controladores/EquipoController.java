@@ -102,6 +102,24 @@ public class EquipoController {
         }
     }
 
+    @GetMapping("{id}")
+    public String verEquipo(@PathVariable("id") Long id, Model modelo) {
+        Equipo equipo = equipoService.buscarPorID(id);
+        if (equipo != null) {
+            Estadio estadio = estadioService.buscarPorID(equipo.getEstadio().getId());
+            modelo.addAttribute(equipo);
+            modelo.addAttribute("nombreEstadio", estadio.getNombre());
+            modelo.addAttribute("return", "/equipos");
+            modelo.addAttribute("message", "Vista en Detalle");
+            return "equipos/detalle_equipo";
+        } else {
+            modelo.addAttribute("path", id + "/eliminar");
+            modelo.addAttribute("message", "No se ha podido encontrar el equipo");
+            modelo.addAttribute("return", "/equipos");
+            return "error_message";
+        }
+    }
+
     /**
      * ModelAndView encapsula (equivalente a modificar el Model recibido como
      * parametro y retornar un String con la siguiente vista)
@@ -123,8 +141,6 @@ public class EquipoController {
 
     /**
      * @param equipo
-     * @param fundado
-     * @param resultado
      * @param modelo
      * @return
      * @Valid indica que se apliquen las validaciones BeanValidation declaradas
@@ -137,7 +153,6 @@ public class EquipoController {
      */
     @PostMapping("nuevo")
     public String crearEquipo(@Valid @ModelAttribute("equipo") Equipo equipo,
-            @DateTimeFormat(iso = ISO.DATE) Date fundado,
             BindingResult resultado, Model modelo) {
         if (!resultado.hasErrors()) {
             equipoService.crear(equipo);

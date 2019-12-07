@@ -21,6 +21,6 @@ public interface EstadioService {
 
     public List<Estadio> buscarDistintoId(Long id);
 
-    public List<Estadio> buscarNombreCiudad(String nombre, String ciudad);
+    public List<Estadio> buscarNombre(String nombre);
 
 }

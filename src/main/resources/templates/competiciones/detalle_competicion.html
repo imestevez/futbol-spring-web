@@ -3,29 +3,26 @@
       xmlns:th="http://www.thymeleaf.org">
 
     <head>
-        <title>Estadio</title>
+        <title>Equipo</title>
     </head>
     <body>
         <h1><span th:text="${message}"></span></h1>
         <table class="table table-striped">
             <tr>
                 <td>Nombre</td>
-                <td th:text="${estadio.nombre}" />
+                <td th:text="${competicion.nombre}" />
             </tr>
             <tr>
-                <td>Aforo</td>
-                <td th:text="${estadio.aforo}" />
+                <td>Tipo</td>
+                <td th:text="${competicion.tipo}" />
             </tr>
             <tr>
-                <td>Año Construccion</td>
-                <td th:text="${estadio.construido}" />
+                <td>Edicion</td>
+                <td th:text="${competicion.edicion}" />
             </tr>
             <tr>
-                <td>Direccion</td>
-                <td th:text="'c/'+ ${estadio.direccion.calle}+ ', ' 
-                    + ${estadio.direccion.numero}+ ', ' 
-                    + ${estadio.direccion.ciudad}+ ', ' 
-                    + ${estadio.direccion.pais}" />
+                <td>Descripcion</td>
+                <td th:text="${competicion.descripcion}" />
             </tr>
         </table>
         <a class="btn btn-lg btn-block btn-secondary col-2" th:href="${return}">Volver</a>

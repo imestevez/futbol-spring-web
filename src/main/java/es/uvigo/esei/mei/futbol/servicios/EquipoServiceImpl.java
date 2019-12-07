@@ -19,20 +19,20 @@ public class EquipoServiceImpl implements EquipoService {
 
     @Override
     @Transactional
-    public Equipo crear(Equipo cliente) {
-        return dao.save(cliente);
+    public Equipo crear(Equipo estadio) {
+        return dao.save(estadio);
     }
 
     @Override
     @Transactional
-    public Equipo modificar(Equipo cliente) {
-        return dao.save(cliente);
+    public Equipo modificar(Equipo estadio) {
+        return dao.save(estadio);
     }
 
     @Override
     @Transactional
-    public void eliminar(Equipo cliente) {
-        dao.delete(cliente);
+    public void eliminar(Equipo estadio) {
+        dao.delete(estadio);
     }
 
     @Override

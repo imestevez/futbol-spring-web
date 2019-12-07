@@ -43,14 +43,12 @@ public class EstadioController {
         List<Estadio> estadios = estadioService.buscarTodos();
         modelo.addAttribute("estadios", estadios);
         modelo.addAttribute("nombreEstadio", "");
-        modelo.addAttribute("nombreCiudad", "");
         return "estadios/listado_estadios";
     }
 
     @PostMapping("buscar")
-    public String prepararEstadiosSearch(@RequestParam(required = false) String nombreEstadio,
-            @RequestParam(required = false) String nombreCiudad, Model modelo) {
-        List<Estadio> estadios = estadioService.buscarNombreCiudad(nombreEstadio, nombreCiudad);
+    public String prepararEstadiosSearch(@RequestParam(required = false) String nombreEstadio, Model modelo) {
+        List<Estadio> estadios = estadioService.buscarNombre(nombreEstadio);
         modelo.addAttribute("estadios", estadios);
         modelo.addAttribute("nombreEstadio", "");
         modelo.addAttribute("nombreCiudad", "");
@@ -134,8 +132,6 @@ public class EstadioController {
     /**
      * @param estadio
      * @param fundado
-     * @param resultado
-     * @param modelo
      * @return
      * @Valid indica que se apliquen las validaciones BeanValidation declaradas
      * en el correspondiente tipo
@@ -147,7 +143,6 @@ public class EstadioController {
      */
     @PostMapping("nuevo")
     public String crearEstadio(@Valid @ModelAttribute("estadio") Estadio estadio,
-            @DateTimeFormat(iso = ISO.DATE) Date fundado,
             BindingResult resultado, Model modelo) {
         if (!resultado.hasErrors()) {
             estadioService.crear(estadio);

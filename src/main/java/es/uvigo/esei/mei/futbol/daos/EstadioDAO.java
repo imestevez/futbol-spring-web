@@ -25,10 +25,8 @@ public interface EstadioDAO extends JpaRepository<Estadio, Long> {
     @Query(value = "SELECT * FROM Estadio WHERE id != :id", nativeQuery = true)
     public List<Estadio> findByDisctictId(@Param("id") Long id);
 
-    @Query(value = "SELECT * FROM Estadio  WHERE nombre LIKE CONCAT('%',:nombre,'%') "
-            + "AND ciudad LIKE  CONCAT('%',:ciudad,'%')",
+    @Query(value = "SELECT * FROM Estadio  WHERE nombre LIKE CONCAT('%',:nombre,'%') ",
             nativeQuery = true)
-    public List<Estadio> findByNombreCiudad(@Param("nombre") String nombre,
-            @Param("ciudad") String ciudad);
+    public List<Estadio> findByNombre(@Param("nombre") String nombre);
 
 }
