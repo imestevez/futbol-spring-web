@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html th:replace="~{fragmentos/layout::layout(~{this::title}, ~{this::body})}" 
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Equipo</title>
+    </head>
+    <body>
+        <h1><span th:text="${message}"></span></h1>
+        <table class="table table-striped">
+            <tr>
+                <th>Fecha</th>
+                <td th:text="${partido.fecha}" />
+            </tr>
+            <tr>
+                <th>Local</th>
+                <td th:text="${partido.local.nombre}" />
+            </tr>
+            <tr>
+                <th>Visitante</th>
+                <td th:text="${partido.visitante.nombre}" />
+            </tr>
+            <tr>
+                <th>Resultado Local</th>
+                <td th:text="${partido.resultado.local}" />
+            </tr>
+            <tr>
+                <th>Resultado Visitante</th>
+                <td th:text="${partido.resultado.visitante}" />
+            </tr>
+            <tr>
+                <th>Estadio</th>
+                <td th:text="${partido.estadio.nombre}" />
+            </tr>
+            <tr>
+                <th>Competicion</th>
+                <td th:text="${partido.competicion.nombre}" />
+            </tr>
+        </table>
+        <a class="btn btn-lg btn-block btn-secondary col-2" th:href="${return}">Volver</a>
+    </body>
+</html>

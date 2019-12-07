@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html th:replace="~{fragmentos/layout::layout(~{this::title}, ~{this::body})}" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <title>Editar/crear partido</title>
+    </head>
+
+    <body>
+        <h1 class="center-text" th:text="${esNuevo} ? 'Crear partido' : 'Editar partido'"></h1>
+        <form  th:action="@{/partidos/nuevo}" th:object="${partido}" class="form-horizontal" id="partido-form" modelAttribute="partido" method="post">
+            <div class="form-group has-feedback">
+                <div class="form-group">
+                    <label class="col-2 control-label">Fecha</label>
+                    <input type="date" class="col-10 form-control" th:field="*{fecha}" size="30" maxlength="100" required/>
+                    <label class="col-2 control-label">Equipo Local</label>
+                    <select class="col-10 form-control" th:field="*{local}">
+                        <option th:each="equipo : ${equipos}" th:value="${equipo.id}"th:text="${equipo.nombre}" 
+                                selected="${!esNuevo && equipo.id == local.id} ? 'selected' : 'none'"/>
+                    </select>
+                    <label class="col-2 control-label">Equipo Visitante</label>
+                    <select class="col-10 form-control" th:field="*{visitante}">
+                        <option th:each="equipo : ${equipos}" th:value="${equipo.id}"th:text="${equipo.nombre}" 
+                                selected="${!esNuevo && equipo.id == visitante.id} ? 'selected' : 'none'"/>
+                    </select>
+                    <label class="col-2 control-label">Goles Local</label>
+                    <input type="number" class="col-10 form-control" th:field="*{resultado.local}" size="30" maxlength="100" pattern="[0-9]{4}" placeholder="2019" required/>
+                    <label class="col-2 control-label">Goles Visitante</label>
+                    <input type="number" class="col-10 form-control" th:field="*{resultado.visitante}" size="30" maxlength="100" pattern="[0-9]{4}" placeholder="2019" required/>
+                    <label class="col-2 control-label">Estadio</label>
+                    <select class="col-10 form-control" th:field="*{estadio}">
+                        <option th:each="est : ${estadios}" th:value="${est.id}" th:text="${est.nombre}" 
+                                selected="${!esNuevo && est.id == estadio.id} ? 'selected' : 'none'"/>
+                        </option>      
+                    </select>
+                    <label class="col-2 control-label">Competicion</label>
+                    <select class="col-10 form-control" th:field="*{competicion}">
+                        <option th:each="comp : ${competiciones}" th:value="${comp.id}"th:text="${comp.nombre}" 
+                                selected="${!esNuevo && comp.id == competicion.id} ? 'selected' : 'none'"/>
+                        </option>      
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-lg btn-block btn-success col-2" th:text="${esNuevo} ? 'Crear' : 'Guardar'" type="submit">
+                        Guardar</button>
+                    <a class="btn btn-lg btn-block btn-secondary col-2" th:href="@{/partidos/}">Cancelar</a>
+                </div>
+            </div>
+        </form>
+    </body>
+</html>
