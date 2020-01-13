@@ -8,8 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import es.uvigo.esei.mei.futbol.daos.EstadioDAO;
 import es.uvigo.esei.mei.futbol.entidades.Estadio;
-import es.uvigo.esei.mei.futbol.servicios.EstadioService;
-import java.util.Date;
 
 @Service
 public class EstadioServiceImpl implements EstadioService {

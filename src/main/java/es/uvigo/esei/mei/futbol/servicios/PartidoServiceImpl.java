@@ -19,20 +19,20 @@ public class PartidoServiceImpl implements PartidoService {
 
     @Override
     @Transactional
-    public Partido crear(Partido estadio) {
-        return dao.save(estadio);
+    public Partido crear(Partido partido) {
+        return dao.save(partido);
     }
 
     @Override
     @Transactional
-    public Partido modificar(Partido estadio) {
-        return dao.save(estadio);
+    public Partido modificar(Partido partido) {
+        return dao.save(partido);
     }
 
     @Override
     @Transactional
-    public void eliminar(Partido estadio) {
-        dao.delete(estadio);
+    public void eliminar(Partido partido) {
+        dao.delete(partido);
     }
 
     @Override
