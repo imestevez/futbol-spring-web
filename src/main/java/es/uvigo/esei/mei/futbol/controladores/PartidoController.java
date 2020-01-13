@@ -164,11 +164,10 @@ public class PartidoController {
             List<Estadio> estadios = estadioService.buscarTodos();
             List<Equipo> equipos = equipoService.buscarTodos();
             List<Competicion> competiciones = competicionService.buscarTodos();
-            ModelAndView result = new ModelAndView();
-            result.addObject("partido", partido);
-            result.addObject("estadios", estadios);
-            result.addObject("equipos", equipos);
-            result.addObject("competiciones", competiciones);
+            modelo.addAttribute("partido", partido);
+            modelo.addAttribute("estadios", estadios);
+            modelo.addAttribute("equipos", equipos);
+            modelo.addAttribute("competiciones", competiciones);
             modelo.addAttribute("esNuevo", false);
             return "partidos/editar_partido";
         } catch (EntityNotFoundException e) {

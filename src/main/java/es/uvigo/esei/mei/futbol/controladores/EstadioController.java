@@ -173,7 +173,8 @@ public class EstadioController {
     }
 
     @PostMapping("{id}/editar")
-    public String actualizarEstadio(@Valid @ModelAttribute Estadio estadio, BindingResult resultado) {
+    public String actualizarEstadio(@Valid @PathVariable("id") Long id, 
+            @ModelAttribute Estadio estadio, BindingResult resultado) {
         if (!resultado.hasErrors()) {
             estadioService.modificar(estadio);
             return "redirect:/estadios";
