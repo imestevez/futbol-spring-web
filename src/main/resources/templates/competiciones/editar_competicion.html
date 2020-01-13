@@ -7,7 +7,8 @@
 
     <body>
         <h1 class="center-text" th:text="${esNuevo} ? 'Crear competicion' : 'Editar competicion'"></h1>
-        <form  th:action="@{/competiciones/nuevo}" th:object="${competicion}" class="form-horizontal" id="competicion-form" modelAttribute="competicion" method="post">
+        <form  th:object="${competicion}"  th:action="${esNuevo} ? @{/competiciones/nuevo} : @{/competiciones/__${competicion.id}__/editar} " 
+               class="form-horizontal" id="competicion-form" modelAttribute="competicion" method="post">
             <div class="form-group has-feedback">
                 <div class="form-group">
                     <label class="col-2 control-label">Nombre</label>
@@ -21,6 +22,8 @@
                         </option>                    </select>
                     <label class="col-2 control-label">Edicion</label>
                     <input type="number" class="col-10 form-control" th:field="*{edicion}" size="30" maxlength="100" pattern="[0-9]{4}" placeholder="2019" required/>
+                    <label class="col-2 control-label">Descripción</label>
+                    <textarea  class="col-10 form-control" th:field="*{descripcion}" rows="5" cols="20" maxlength="100"  placeholder="Escriba una descripcion..." > </textarea >
                 </div>
                 <div class="form-group">
                     <button class="btn btn-lg btn-block btn-success col-2" th:text="${esNuevo} ? 'Crear' : 'Guardar'" type="submit">

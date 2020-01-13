@@ -4,12 +4,13 @@
     <head>
         <title>Editar/crear partido</title>
     </head>
-
     <body>
         <h1 class="center-text" th:text="${esNuevo} ? 'Crear partido' : 'Editar partido'"></h1>
-        <form  th:action="@{/partidos/nuevo}" th:object="${partido}" class="form-horizontal" id="partido-form" modelAttribute="partido" method="post">
+        <form  th:object="${partido}"  th:action="${esNuevo} ? @{/partidos/nuevo} : @{/partidos/__${partido.id}__/editar} " 
+               class="form-horizontal" id="partido-form" modelAttribute="partido" method="post">
             <div class="form-group has-feedback">
                 <div class="form-group">
+                    <label class="col-10 form-control" style="display: none" th:text="${esNuevo} ? '' : *{id}" />
                     <label class="col-2 control-label">Fecha</label>
                     <input type="date" class="col-10 form-control" th:field="*{fecha}" size="30" maxlength="100" required/>
                     <label class="col-2 control-label">Equipo Local</label>

@@ -7,7 +7,8 @@
 
     <body>
         <h1 class="center-text" th:text="${esNuevo} ? 'Crear equipo' : 'Editar equipo'"></h1>
-        <form  th:action="@{/equipos/nuevo}" th:object="${equipo}" class="form-horizontal" id="equipo-form" modelAttribute="equipo" method="post">
+        <form  th:object="${equipo}"  th:action="${esNuevo} ? @{/equipos/nuevo} : @{/equipos/__${equipo.id}__/editar} " 
+               class="form-horizontal" id="equipo-form" modelAttribute="equipo" method="post">
             <div class="form-group has-feedback">
                 <div class="form-group">
                     <label class="col-2 control-label">Nombre</label>
@@ -19,8 +20,8 @@
                     <label class="col-2 control-label">Fecha Fundacion</label>
                     <input type="date" class="col-10 form-control" th:field="*{fundado}" size="30" maxlength="100" required/>
                     <label class="col-2 control-label">Estadio</label>
-                    <select class="col-10 form-control" th:field="*{estadio}">
-                        <option th:each="estadio : ${estadios}" th:value="${estadio.id}"th:text="${estadio.nombre}"/>
+                    <select class="col-10 form-control" th:field="*{equipo}">
+                        <option th:each="equipo : ${equipos}" th:value="${equipo.id}"th:text="${equipo.nombre}"/>
                     </select>
                 </div>
                 <div class="form-group">
