@@ -1,5 +1,6 @@
 package es.uvigo.esei.mei.futbol.controladores;
 
+import es.uvigo.esei.mei.futbol.entidades.Equipo;
 import java.util.List;
 
 import javax.persistence.EntityNotFoundException;
@@ -20,8 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import es.uvigo.esei.mei.futbol.entidades.Estadio;
 import es.uvigo.esei.mei.futbol.entidades.Estadio;
+import es.uvigo.esei.mei.futbol.entidades.Partido;
+import es.uvigo.esei.mei.futbol.servicios.EquipoService;
 import es.uvigo.esei.mei.futbol.servicios.EstadioService;
-import es.uvigo.esei.mei.futbol.servicios.EstadioService;
+import es.uvigo.esei.mei.futbol.servicios.PartidoService;
 import java.util.ArrayList;
 import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,6 +36,10 @@ public class EstadioController {
 
     @Autowired
     EstadioService estadioService;
+    @Autowired
+    PartidoService partidoService;
+    @Autowired
+    EquipoService equipoService;
 
     /**
      * Model encapsula el modelo (en este caso sera un Model vacio para ser
@@ -56,24 +63,6 @@ public class EstadioController {
     }
 
     /**
-     * @RequestParam captura los parámetros de la peticion (en este caso cuerpo
-     * del POST) cuyo nombre coincida con el nombre de los parametros
-     */
-    /* @PostMapping
-    public String actualizarListarEstadios(@RequestParam(required = false) String nombreEstadio,
-            @RequestParam(required = false) String ciudad, Model modelo) {
-        List<Estadio> estadios;
-        if ((nombreEstadio != null) && !nombreEstadio.isEmpty()) {
-            estadios = estadioService.buscarPorNombre(nombreEstadio);
-        } else if ((ciudad != null) && !ciudad.isEmpty()) {
-            estadios = estadioService.buscarPorCiudad(ciudad);
-        } else {
-            estadios = estadioService.buscarTodos();
-        }
-        modelo.addAttribute("estadios", estadios);
-        return "estadio/listado_estadios";
-    }*/
-    /**
      * @param id
      * @param modelo
      * @return View
@@ -83,10 +72,22 @@ public class EstadioController {
     public String borrarEstadio(@PathVariable("id") Long id, Model modelo) {
         Estadio estadio = estadioService.buscarPorID(id);
         if (estadio != null) {
-            estadioService.eliminar(estadio);
+            List<Partido> partidos = partidoService.buscarPorEstadio(estadio);
+            String msg = "";
+            if (partidos.isEmpty()) {
+                List<Equipo> equipos = equipoService.buscarPorEstadio(estadio);
+                if (equipos.isEmpty()) {
+                    estadioService.eliminar(estadio);
+                    msg = "Eliminado Correctamente";
+                } else {
+                    msg = "ERROR: Elimina primero los equipos";
+                }
+            } else {
+                msg = "ERROR: Elimina primero los partidos";
+            }
             modelo.addAttribute(estadio);
             modelo.addAttribute("return", "/estadios");
-            modelo.addAttribute("message", "Eliminado correctamente");
+            modelo.addAttribute("message", msg);
             return "estadios/detalle_estadio";
         } else {
             modelo.addAttribute("path", id + "/eliminar");
@@ -95,6 +96,7 @@ public class EstadioController {
             return "error_message";
         }
     }
+
     @GetMapping("{id}")
     public String verEstadio(@PathVariable("id") Long id, Model modelo) {
         Estadio estadio = estadioService.buscarPorID(id);
@@ -110,6 +112,7 @@ public class EstadioController {
             return "error_message";
         }
     }
+
     /**
      * ModelAndView encapsula (equivalente a modificar el Model recibido como
      * parametro y retornar un String con la siguiente vista)
@@ -173,7 +176,7 @@ public class EstadioController {
     }
 
     @PostMapping("{id}/editar")
-    public String actualizarEstadio(@Valid @PathVariable("id") Long id, 
+    public String actualizarEstadio(@Valid @PathVariable("id") Long id,
             @ModelAttribute Estadio estadio, BindingResult resultado) {
         if (!resultado.hasErrors()) {
             estadioService.modificar(estadio);

@@ -20,8 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import es.uvigo.esei.mei.futbol.entidades.Competicion;
 import es.uvigo.esei.mei.futbol.entidades.Competicion;
+import es.uvigo.esei.mei.futbol.entidades.Partido;
 import es.uvigo.esei.mei.futbol.servicios.CompeticionService;
 import es.uvigo.esei.mei.futbol.servicios.CompeticionService;
+import es.uvigo.esei.mei.futbol.servicios.PartidoService;
 import java.util.ArrayList;
 import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -33,6 +35,8 @@ public class CompeticionController {
 
     @Autowired
     CompeticionService competicionService;
+    @Autowired
+    PartidoService partidoService;
 
     /**
      * Model encapsula el modelo (en este caso sera un Model vacio para ser
@@ -58,24 +62,6 @@ public class CompeticionController {
     }
 
     /**
-     * @RequestParam captura los parámetros de la peticion (en este caso cuerpo
-     * del POST) cuyo nombre coincida con el nombre de los parametros
-     */
-    /* @PostMapping
-    public String actualizarListarCompeticiones(@RequestParam(required = false) String nombreCompeticion,
-            @RequestParam(required = false) String tipo, Model modelo) {
-        List<Competicion> competiciones;
-        if ((nombreCompeticion != null) && !nombreCompeticion.isEmpty()) {
-            competiciones = competicionService.buscarPorNombre(nombreCompeticion);
-        } else if ((tipo != null) && !tipo.isEmpty()) {
-            competiciones = competicionService.buscarPorTipo(tipo);
-        } else {
-            competiciones = competicionService.buscarTodos();
-        }
-        modelo.addAttribute("competiciones", competiciones);
-        return "competicion/listado_competiciones";
-    }*/
-    /**
      * @param id
      * @param modelo
      * @return View
@@ -85,10 +71,17 @@ public class CompeticionController {
     public String borrarCompeticion(@PathVariable("id") Long id, Model modelo) {
         Competicion competicion = competicionService.buscarPorID(id);
         if (competicion != null) {
-            competicionService.eliminar(competicion);
+            List<Partido> partidos = partidoService.buscarPorCompeticion(competicion);
+            String msg = "";
+            if (partidos.isEmpty()) {
+                competicionService.eliminar(competicion);
+                msg = "Eliminada Correctamente";
+            } else {
+                msg = "ERROR: Elimina primero los partidos";
+            }
             modelo.addAttribute(competicion);
             modelo.addAttribute("return", "/competiciones");
-            modelo.addAttribute("message", "Eliminado correctamente");
+            modelo.addAttribute("message", msg);
             return "competiciones/detalle_competicion";
         } else {
             modelo.addAttribute("path", id + "/eliminar");
@@ -97,6 +90,7 @@ public class CompeticionController {
             return "error_message";
         }
     }
+
     @GetMapping("{id}")
     public String verCompeticion(@PathVariable("id") Long id, Model modelo) {
         Competicion competicion = competicionService.buscarPorID(id);
@@ -112,6 +106,7 @@ public class CompeticionController {
             return "error_message";
         }
     }
+
     /**
      * ModelAndView encapsula (equivalente a modificar el Model recibido como
      * parametro y retornar un String con la siguiente vista)

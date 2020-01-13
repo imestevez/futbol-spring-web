@@ -20,8 +20,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import es.uvigo.esei.mei.futbol.entidades.Equipo;
 import es.uvigo.esei.mei.futbol.entidades.Estadio;
+import es.uvigo.esei.mei.futbol.entidades.Partido;
 import es.uvigo.esei.mei.futbol.servicios.EquipoService;
 import es.uvigo.esei.mei.futbol.servicios.EstadioService;
+import es.uvigo.esei.mei.futbol.servicios.PartidoService;
 import java.util.ArrayList;
 import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -35,6 +37,8 @@ public class EquipoController {
     EquipoService equipoService;
     @Autowired
     EstadioService estadioService;
+    @Autowired
+    PartidoService partidoService;
 
     /**
      * Model encapsula el modelo (en este caso sera un Model vacio para ser
@@ -60,24 +64,6 @@ public class EquipoController {
     }
 
     /**
-     * @RequestParam captura los parámetros de la peticion (en este caso cuerpo
-     * del POST) cuyo nombre coincida con el nombre de los parametros
-     */
-    /* @PostMapping
-    public String actualizarListarEquipos(@RequestParam(required = false) String nombreEquipo,
-            @RequestParam(required = false) String ciudad, Model modelo) {
-        List<Equipo> equipos;
-        if ((nombreEquipo != null) && !nombreEquipo.isEmpty()) {
-            equipos = equipoService.buscarPorNombre(nombreEquipo);
-        } else if ((ciudad != null) && !ciudad.isEmpty()) {
-            equipos = equipoService.buscarPorCiudad(ciudad);
-        } else {
-            equipos = equipoService.buscarTodos();
-        }
-        modelo.addAttribute("equipos", equipos);
-        return "equipo/listado_equipos";
-    }*/
-    /**
      * @param id
      * @param modelo
      * @return View
@@ -87,12 +73,19 @@ public class EquipoController {
     public String borrarEquipo(@PathVariable("id") Long id, Model modelo) {
         Equipo equipo = equipoService.buscarPorID(id);
         if (equipo != null) {
-            equipoService.eliminar(equipo);
             Estadio estadio = estadioService.buscarPorID(equipo.getEstadio().getId());
+            List<Partido> partidosL = partidoService.buscarPorLocal(equipo);
+            List<Partido> partidosV = partidoService.buscarPorVisitante(equipo);
+            String msg = "";
+            if (partidosL.isEmpty() && partidosV.isEmpty()) {
+                equipoService.eliminar(equipo);
+                msg = "Eliminado correctamente";
+            } else {
+                msg = "ERROR: Elimina primero los partidos";
+            }
             modelo.addAttribute(equipo);
-            modelo.addAttribute("nombreEstadio", estadio.getNombre());
             modelo.addAttribute("return", "/equipos");
-            modelo.addAttribute("message", "Eliminado correctamente");
+            modelo.addAttribute("message", msg);
             return "equipos/detalle_equipo";
         } else {
             modelo.addAttribute("path", id + "/eliminar");
@@ -103,12 +96,13 @@ public class EquipoController {
     }
 
     @GetMapping("{id}")
-    public String verEquipo(@PathVariable("id") Long id, Model modelo) {
+    public String verEquipo(@PathVariable("id") Long id, Model modelo
+    ) {
         Equipo equipo = equipoService.buscarPorID(id);
         if (equipo != null) {
             Estadio estadio = estadioService.buscarPorID(equipo.getEstadio().getId());
             modelo.addAttribute(equipo);
-            modelo.addAttribute("nombreEstadio", estadio.getNombre());
+            modelo.addAttribute("nombreEquipo", estadio.getNombre());
             modelo.addAttribute("return", "/equipos");
             modelo.addAttribute("message", "Vista en Detalle");
             return "equipos/detalle_equipo";
@@ -152,8 +146,11 @@ public class EquipoController {
      * de los objetos reales
      */
     @PostMapping("nuevo")
-    public String crearEquipo(@Valid @ModelAttribute("equipo") Equipo equipo,
-            BindingResult resultado, Model modelo) {
+    public String crearEquipo(@Valid
+            @ModelAttribute("equipo") Equipo equipo,
+            BindingResult resultado,
+            Model modelo
+    ) {
         if (!resultado.hasErrors()) {
             equipoService.crear(equipo);
             return "redirect:/equipos";
@@ -169,7 +166,8 @@ public class EquipoController {
     }
 
     @GetMapping("{id}/editar")
-    public String prepararEditarEquipo(@PathVariable("id") Long id, Model modelo) {
+    public String prepararEditarEquipo(@PathVariable("id") Long id, Model modelo
+    ) {
         try {
             Equipo equipo = equipoService.buscarPorID(id);
             List<Estadio> estadios = estadioService.buscarDistintoId(equipo.getEstadio().getId());
@@ -189,7 +187,9 @@ public class EquipoController {
     }
 
     @PostMapping("{id}/editar")
-    public String actualizarEquipo(@Valid @ModelAttribute Equipo equipo, BindingResult resultado) {
+    public String actualizarEquipo(@Valid
+            @ModelAttribute Equipo equipo, BindingResult resultado
+    ) {
         if (!resultado.hasErrors()) {
             equipoService.modificar(equipo);
             return "redirect:/equipos";
