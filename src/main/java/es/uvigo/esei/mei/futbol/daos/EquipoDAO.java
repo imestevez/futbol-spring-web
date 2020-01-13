@@ -16,6 +16,7 @@ import org.springframework.data.repository.query.Param;
  * @author ivan
  */
 public interface EquipoDAO extends JpaRepository<Equipo, Long> {
+    
     public List<Equipo> findAll();
 
     public Equipo getById(Long id);
@@ -24,10 +25,10 @@ public interface EquipoDAO extends JpaRepository<Equipo, Long> {
 
     public List<Equipo> findByCiudadContaining(String ciudad);
 
-    @Query(value = "SELECT * FROM Equipo  WHERE nombre LIKE CONCAT('%',:nombre,'%') " +
-        "AND ciudad LIKE  CONCAT('%',:ciudad,'%')", 
-    nativeQuery = true)
-    public List<Equipo> findByNombreCiudad(@Param("nombre") String nombre, 
-                    @Param("ciudad") String ciudad);
+    @Query(value = "SELECT * FROM Equipo  WHERE nombre LIKE CONCAT('%',:nombre,'%') "
+            + "AND ciudad LIKE  CONCAT('%',:ciudad,'%')",
+            nativeQuery = true)
+    public List<Equipo> findByNombreCiudad(@Param("nombre") String nombre,
+            @Param("ciudad") String ciudad);
 
 }
